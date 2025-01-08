@@ -6,6 +6,6 @@ export default defineProject({
     cacheDir: '../.cache/vitest',
     setupFiles: ['../../setup.js'],
     testTimeout: 10000,
-    environment: 'happy-dom'
+    environment: 'edge-runtime'
   }
 });
