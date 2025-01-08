@@ -1,4 +1,4 @@
-import { map, Subject } from 'rxjs';
+import { concatWith, map, of, Subject } from 'rxjs';
 
 import { calcReceivedStats, MSECOND } from './utils';
 
@@ -6,6 +6,7 @@ export const EstimateTime = (timeUnit = MSECOND) => {
   return new Subject().pipe(
     calcReceivedStats(),
     calcEstimatedTime(),
+    concatWith(of(0)),
     convertEstimedTimeTo(timeUnit)
   );
 };

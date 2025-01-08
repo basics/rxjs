@@ -206,32 +206,33 @@ describe('test', () => {
     const { request } = await import('./request.js');
 
     const progress = Progress();
-    progress.subscribe({
-      next: e => console.log('DOWNLOAD', e)
-    });
-    const byteRate = TransferRate(MBYTE, SECOND);
-    byteRate.subscribe({
-      next: e => console.log('RATE', e)
-      // complete: () => console.log('complete')
-    });
-    const estimateTime = EstimateTime(SECOND);
-    estimateTime.subscribe({
-      next: e => console.log('ESTIMATE', e)
-    });
-    // https://api.github.com/repos/mediaelement/mediaelement-files/contents/big_buck_bunny.mp4
-    // https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4
-    // https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg
-    // https://upload.wikimedia.org/wikipedia/commons/4/4f/SVG_Logo.svg
+    progress.subscribe({ next: e => console.log('DOWNLOAD', e) });
 
-    const req = new Request(
-      new URL('https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'),
-      {
-        method: 'GET'
-      }
-    );
+    const byteRate = TransferRate(MBYTE, SECOND);
+    byteRate.subscribe({ next: e => console.log('RATE', e) });
+
+    const estimateTime = EstimateTime(SECOND);
+    estimateTime.subscribe({ next: e => console.log('ESTIMATE', e) });
+
+    const fileMap = {
+      VIDEO_170MB:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      VIDEO_13MB:
+        'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
+      SvgContentLengthValid: 'https://upload.wikimedia.org/wikipedia/commons/4/4f/SVG_Logo.svg',
+      SvgContentLengthInvalid: 'https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg'
+    };
+
+    const req = new Request(new URL(fileMap.SvgContentLengthInvalid), {
+      method: 'GET'
+    });
 
     const value = await lastValueFrom(
-      of(req).pipe(request({ download: [progress, byteRate, estimateTime] }), resolveBlob())
+      of(req).pipe(
+        request({ download: [progress, byteRate, estimateTime] }),
+        resolveBlob()
+        //
+      )
     );
     console.log('FINAL', value);
     writeFileSync('programming.mp4', global.Buffer.from(await value.arrayBuffer()));
