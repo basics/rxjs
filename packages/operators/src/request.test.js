@@ -223,7 +223,7 @@ describe('test', () => {
       SvgContentLengthInvalid: 'https://upload.wikimedia.org/wikipedia/commons/8/84/Example.svg'
     };
 
-    const req = new Request(new URL(fileMap.SvgContentLengthInvalid), {
+    const req = new Request(new URL(fileMap.VIDEO_13MB), {
       method: 'GET'
     });
 

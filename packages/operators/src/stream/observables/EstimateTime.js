@@ -1,4 +1,4 @@
-import { concatWith, map, of, Subject } from 'rxjs';
+import { concatWith, distinctUntilChanged, map, of, Subject } from 'rxjs';
 
 import { calcReceivedStats, MSECOND } from './utils';
 
@@ -7,6 +7,7 @@ export const EstimateTime = (timeUnit = MSECOND) => {
     calcReceivedStats(),
     calcEstimatedTime(),
     concatWith(of(0)),
+    distinctUntilChanged(),
     convertEstimedTimeTo(timeUnit)
   );
 };
