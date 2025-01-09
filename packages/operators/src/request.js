@@ -5,13 +5,13 @@ import { resolveBlob, resolveJSON, resolveText } from './response';
 import { retryWhenRequestError } from './retry';
 import { bypassStream } from './stream/bypassStream';
 
-export const request = ({ retry, cache: cacheOptions, download = [], upload = [] } = {}) => {
+export const request = ({ retry, cache: cacheOptions, stats } = {}) => {
   return source =>
     source.pipe(
-      bypassStream(upload),
+      bypassStream(stats?.upload),
       tryRequest(),
       retryWhenRequestError(retry),
-      bypassStream(download),
+      bypassStream(stats?.download),
       cache(cacheOptions)
       //
     );

@@ -192,7 +192,7 @@ describe.skip('request - demo ', () => {
       'demo',
       of(req).pipe(
         log('operators:request:upload'),
-        request({ progress: { upload: progressUpload, download: progressDownload } }),
+        request({ stats: { download: [progressDownload], upload: [progressUpload] } }),
         log('operators:request:upload:response'),
         resolveJSON()
         // tap(async e => console.log('TAGAUIUI', await e.text()))
@@ -229,7 +229,7 @@ describe('test', () => {
 
     const value = await lastValueFrom(
       of(req).pipe(
-        request({ download: [progress, byteRate, estimateTime] }),
+        request({ stats: { download: [progress, byteRate, estimateTime] } }),
         resolveBlob()
         //
       )

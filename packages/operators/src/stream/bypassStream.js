@@ -2,7 +2,7 @@ import { concatMap, from, map, of } from 'rxjs';
 
 import { readBytes } from './utils';
 
-export const bypassStream = (reworkers, chunkSize = 60 * 1024) => {
+export const bypassStream = (reworkers = [], chunkSize = 60 * 1024) => {
   return source =>
     source.pipe(
       concatMap(requestResponse => {
@@ -71,7 +71,7 @@ const objectToStreamMap = new Map([
 const convertRequestToStream = req => {
   return from(req.blob()).pipe(
     map(blob => ({
-      stream: new req.constructor(req.url, { method: 'POST', body: blob }).body,
+      stream: new req.constructor(req.url, { method: req.method, body: blob }).body,
       total: blob.size
     }))
   );
