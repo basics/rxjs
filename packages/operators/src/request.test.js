@@ -9,9 +9,9 @@ import { test, describe, beforeEach, expect, vi, afterAll, beforeAll } from 'vit
 
 import { log, logResult } from './log.js';
 import { resolveBlob, resolveJSON } from './response.js';
-import { EstimateTime } from './stream/stats/EstimateTime.js';
-import { Progress } from './stream/stats/Progress.js';
-import { TransferRate } from './stream/stats/TransferRate.js';
+import EstimateTime from './stream/stats/EstimateTime.js';
+import Progress from './stream/stats/Progress.js';
+import TransferRate from './stream/stats/TransferRate.js';
 import { MBYTE, SECOND } from './stream/stats/utils.js';
 
 describe.skip('request', () => {
@@ -176,13 +176,13 @@ describe.skip('request - demo ', () => {
       body: formData
     });
 
-    const progressUpload = new Progress();
+    const progressUpload = Progress.create();
     progressUpload.subscribe({
       next: e => console.log('UPLOAD', e),
       complete: () => console.log('complete')
     });
 
-    const progressDownload = new Progress();
+    const progressDownload = Progress.create();
     progressDownload.subscribe({
       next: e => console.log('DOWNLOAD', e),
       complete: () => console.log('complete')
@@ -205,13 +205,13 @@ describe('test', () => {
   test('progress on download', async () => {
     const { request } = await import('./request.js');
 
-    const progress = new Progress();
+    const progress = Progress.create();
     progress.subscribe({ next: e => console.log('DOWNLOAD', e) });
 
-    const byteRate = new TransferRate(MBYTE, SECOND);
+    const byteRate = TransferRate.create(MBYTE, SECOND);
     byteRate.subscribe({ next: e => console.log('RATE', e) });
 
-    const estimateTime = new EstimateTime(SECOND);
+    const estimateTime = EstimateTime.create(SECOND);
     estimateTime.subscribe({ next: e => console.log('ESTIMATE', e) });
 
     const fileMap = {

@@ -24,7 +24,8 @@ export default [
       globals: {
         ...globals.browser,
         expect: 'readonly',
-        global: 'readonly'
+        global: 'readonly',
+        __dirname: 'readonly'
       }
     },
     plugins: {

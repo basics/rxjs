@@ -2,10 +2,9 @@ import { concatWith, distinctUntilChanged, map, of, Subject } from 'rxjs';
 
 import { calcReceivedStats, MSECOND } from './utils';
 
-export class EstimateTime extends Subject {
-  constructor(timeUnit = MSECOND) {
-    super();
-    return this.pipe(
+export default {
+  create: (timeUnit = MSECOND) => {
+    return new Subject().pipe(
       calcReceivedStats(),
       calcEstimatedTime(),
       concatWith(of(0)),
@@ -13,7 +12,7 @@ export class EstimateTime extends Subject {
       convertEstimedTimeTo(timeUnit)
     );
   }
-}
+};
 
 const calcEstimatedTime = () => {
   return source =>

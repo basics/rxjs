@@ -25,8 +25,8 @@ export const blobToXML = () => {
     );
 };
 
-export const blobToVideo = () => {
-  return source => source.pipe();
+export const blobToURL = () => {
+  return source => source.pipe(map(blob => URL.createObjectURL(blob)));
 };
 
 export const blobTo = () => {
@@ -40,12 +40,12 @@ const getOperator = blob => {
 };
 
 const TYPES = {
-  'video/*': blobToVideo,
+  'video/*': blobToURL,
   'application/json': blobToJSON,
   'text/plain': blobToText,
   'text/html': blobToXML,
   'text/xml': blobToXML,
   'application/xml': blobToXML,
   'application/xhtml+xml': blobToXML,
-  'image/svg+xml': blobToVideo
+  'image/svg+xml': blobToXML
 };
